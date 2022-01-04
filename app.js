@@ -1,7 +1,7 @@
 const express = require('express');
 require("dotenv").config();
 const cors = require("cors")
-const { getAllFriends } = require("./services/pgQuery");
+const { getAllFriends, getFriendsByLastName } = require("./services/pgQuery");
 const app = express();
 
 app.use(cors());
@@ -27,6 +27,21 @@ app.get("/friends", async (req, res) => {
         })
     } catch (error) {
         res.status(500).json({ msg: "Server error" });
+    }
+
+});
+
+app.get("/friends/:lastName", async (req, res) => {
+    try {
+        const {lastName} = req.params;
+        const friends = await getFriendsByLastName(lastName);
+        res.status(200).json({
+            status: "success",
+            data: friends,
+            count: friends.length
+        })
+    } catch (error) {
+        res.status(500).json({ msg: "Server error", details: error.message });
     }
 
 });

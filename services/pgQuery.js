@@ -5,6 +5,14 @@ const getAllFriends = async()=>{
     return rows;
 }
 
+const getFriendsByLastName = async(lastName)=>{
+    const {rows} = await db.query(`
+    SELECT * FROM friends
+    WHERE lastname='${lastName}'`);
+    return rows;
+}
+
 module.exports = {
-    getAllFriends
+    getAllFriends,
+    getFriendsByLastName
 }
