@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
         github: "https://github.com/amineen/node-postgresql"
     })
 })
-
+//Edited in WSL
 app.get("/friends", async (req, res) => {
     try {
         const friends = await getAllFriends();
