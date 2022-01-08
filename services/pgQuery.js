@@ -12,7 +12,18 @@ const getFriendsByLastName = async(lastName)=>{
     return rows;
 }
 
+const getPolesFromPostgisDb = async ()=>{
+    const {rows} = await db.queryPostgis(`SELECT * FROM "public"."Poles_1"`);
+    return rows;
+}
+const getResidentialCustomerFromPostgisDb = async ()=>{
+    const {rows} = await db.queryPostgis(`SELECT * FROM "public"."Residential_Customers"`);
+    return rows;
+}
+
 module.exports = {
     getAllFriends,
-    getFriendsByLastName
+    getFriendsByLastName,
+    getPolesFromPostgisDb,
+    getResidentialCustomerFromPostgisDb
 }

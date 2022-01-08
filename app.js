@@ -1,7 +1,7 @@
 const express = require('express');
 require("dotenv").config();
 const cors = require("cors")
-const { getAllFriends, getFriendsByLastName } = require("./services/pgQuery");
+const { getAllFriends, getFriendsByLastName, getPolesFromPostgisDb, getResidentialCustomerFromPostgisDb } = require("./services/pgQuery");
 const app = express();
 
 app.use(cors());
@@ -33,7 +33,7 @@ app.get("/friends", async (req, res) => {
 
 app.get("/friends/:lastName", async (req, res) => {
     try {
-        const {lastName} = req.params;
+        const { lastName } = req.params;
         const friends = await getFriendsByLastName(lastName);
         res.status(200).json({
             status: "success",
@@ -43,8 +43,33 @@ app.get("/friends/:lastName", async (req, res) => {
     } catch (error) {
         res.status(500).json({ msg: "Server error", details: error.message });
     }
-
 });
+app.get("/poles", async (req, res) => {
+    try {
+        const poles = await getPolesFromPostgisDb();
+        res.status(200).json({
+            status: "success",
+            data: poles,
+            count: poles.length
+        })
+    } catch (error) {
+        res.status(500).json({ msg: "Server error", details: error.message });
+    }
+})
+app.get("/residential-customers", async (req, res) => {
+    try {
+        const customers = await getResidentialCustomerFromPostgisDb();
+        res.status(200).json({
+            status: "success",
+            data: customers,
+            count: customers.length
+        })
+    } catch (error) {
+        res.status(500).json({ msg: "Server error", details: error.message });
+    }
+})
+
+
 
 PORT = process.env.PORT || 8080;
 
