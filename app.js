@@ -1,7 +1,7 @@
 const express = require('express');
 require("dotenv").config();
 const cors = require("cors")
-const { getAllFriends, getFriendsByLastName, getPolesFromPostgisDb, getResidentialCustomerFromPostgisDb } = require("./services/pgQuery");
+const { getAllFriends, getFriendsByLastName, getPolesFromPostgisDb, getResidentialCustomerFromPostgisDb, getBusinessesFromPostgisDb } = require("./services/pgQuery");
 const app = express();
 
 app.use(cors());
@@ -59,6 +59,18 @@ app.get("/poles", async (req, res) => {
 app.get("/residential-customers", async (req, res) => {
     try {
         const customers = await getResidentialCustomerFromPostgisDb();
+        res.status(200).json({
+            status: "success",
+            data: customers,
+            count: customers.length
+        })
+    } catch (error) {
+        res.status(500).json({ msg: "Server error", details: error.message });
+    }
+})
+app.get("/businesses", async (req, res) => {
+    try {
+        const customers = await getBusinessesFromPostgisDb();
         res.status(200).json({
             status: "success",
             data: customers,
